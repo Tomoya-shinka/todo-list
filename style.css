@@ -196,12 +196,24 @@ button {
 }
 
 .task-item {
-    background-color: #4a556820; /* Slightly transparent lighter gray */
+    background-color: #4a556820;
     border: 1px solid var(--border-color);
     padding: 15px;
     margin-bottom: 10px;
     border-radius: var(--border-radius-sm);
     transition: box-shadow 0.2s, background-color 0.2s;
+    display: flex; /* ★Flexboxレイアウトに変更 */
+    align-items: center; /* ★要素を縦方向中央に揃える */
+    gap: 15px; /* ★要素間のスペース */
+}
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0; /* ★チェックボックスが縮まないようにする */
+    cursor: pointer;
+}
+.task-details {
+    flex-grow: 1; /* ★残りのスペースをすべて使うようにする */
 }
 
 .task-item:hover {
@@ -243,41 +255,33 @@ button {
 }
 
 .task-actions {
-    margin-top: 10px;
+    margin-top: 0; /* display:flexにしたので不要 */
     text-align: right;
+    margin-left: auto; /* ★これにより右端に寄る */
 }
 
 .task-actions button {
-    margin-left: 8px; /* ボタン間のスペースを少し広げる */
-    padding: 0; /* パディングをリセット */
-    font-size: 1.1em; /* アイコンの大きさをフォントサイズで調整 */
+    margin-left: 8px;
+    padding: 0;
+    font-size: 1.1em;
     background-color: transparent;
-    border: none; /* 枠線をなくす */
+    border: none;
     color: var(--text-secondary);
-    width: 32px; /* ボタンの幅を固定 */
-    height: 32px; /* ボタンの高さを固定 */
-    line-height: 32px; /* アイコンの縦方向の中央揃え */
-    text-align: center; /* アイコンの横方向の中央揃え */
-    border-radius: 50%; /* 円形にする */
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 50%;
     transition: background-color 0.2s, color 0.2s;
 }
+
 .task-actions button:hover {
     background-color: #ffffff1a; /* ホバー時にうっすら背景色 */
     color: var(--text-primary);
 }
 
-.task-actions .complete-btn {
-    color: #38a169;
-}
 .task-actions .complete-btn:hover {
     background-color: #38a169;
-    color: white;
-}
-.task-item.completed .task-actions .complete-btn {
-    color: #f6ad55;
-}
-.task-item.completed .task-actions .complete-btn:hover {
-    background-color: #f6ad55;
     color: white;
 }
 

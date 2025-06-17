@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editCategoryNameInput = document.getElementById('edit-category-name');
     const editCategoryColorBgInput = document.getElementById('edit-category-color-bg');
     const editCategoryColorTextInput = document.getElementById('edit-category-color-text');
-
+    
     function getTodayDateString() {
         const today = new Date();
         const year = today.getFullYear();
@@ -290,13 +290,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const actionsDiv = document.createElement('div');
             actionsDiv.className = 'category-actions';
             const editBtn = document.createElement('button');
-            editBtn.textContent = '編集';
+            editBtn.innerHTML = '<i class="fa-solid fa-pencil"></i>';
+            editBtn.title = '編集';
             editBtn.className = 'edit-cat-btn';
             editBtn.setAttribute('data-id', cat.id);
             editBtn.addEventListener('click', () => handleEditCategory(cat.id));
             actionsDiv.appendChild(editBtn);
             const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = '削除';
+            deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            deleteBtn.title = '削除';
             deleteBtn.className = 'delete-cat-btn';
             deleteBtn.setAttribute('data-id', cat.id);
             deleteBtn.addEventListener('click', () => handleDeleteCategory(cat.id));
@@ -570,32 +572,50 @@ document.addEventListener('DOMContentLoaded', function() {
             taskListContainer.appendChild(noTasksMessage);
             return;
         }
+
         tasksToDisplay.forEach(function(task) {
             const listItem = document.createElement('li');
             listItem.setAttribute('data-task-id', task.id);
             listItem.className = 'task-item';
-            if (task.completed) listItem.classList.add('completed');
+            if (task.completed) {
+                listItem.classList.add('completed');
+            }
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'task-checkbox';
+            checkbox.checked = task.completed;
+            checkbox.addEventListener('change', () => toggleComplete(task.id));
+            listItem.appendChild(checkbox);
+
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'task-details';
+
             const taskNameSpan = document.createElement('span');
             taskNameSpan.className = 'task-name';
             taskNameSpan.textContent = task.name;
-            listItem.appendChild(taskNameSpan);
+            detailsDiv.appendChild(taskNameSpan);
+
             if (task.dueDate) {
                 const dueDateSpan = document.createElement('span');
                 dueDateSpan.className = 'task-due-date';
                 dueDateSpan.textContent = ` (期限: ${task.dueDate})`;
-                listItem.appendChild(dueDateSpan);
+                detailsDiv.appendChild(dueDateSpan);
             }
+            
             let shouldShowPriorityCategory = false;
             if (selectedDateString && !task.completed) {
                 shouldShowPriorityCategory = true;
             } else if (!selectedDateString && currentView === 'active') {
                  shouldShowPriorityCategory = true;
             }
+
             if (shouldShowPriorityCategory) {
                 const prioritySpan = document.createElement('span');
                 prioritySpan.className = 'task-priority';
                 prioritySpan.innerHTML = ` 優先度: ${'★'.repeat(task.priority)}${'☆'.repeat(5 - task.priority)}`;
-                listItem.appendChild(prioritySpan);
+                detailsDiv.appendChild(prioritySpan);
+
                 const categorySpan = document.createElement('span');
                 categorySpan.className = 'task-category-tag';
                 const categoryColors = getCategoryColor(task.category);
@@ -606,41 +626,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 categorySpan.style.fontSize = '0.8em';
                 categorySpan.style.marginLeft = '5px';
                 categorySpan.textContent = task.category;
-                listItem.appendChild(categorySpan);
+                detailsDiv.appendChild(categorySpan);
             }
+            
             if (task.completionDate) {
                 const completionDateSpan = document.createElement('span');
                 completionDateSpan.className = 'task-completion-date';
                 const cDate = new Date(task.completionDate);
                 completionDateSpan.textContent = ` (完了日: ${cDate.toLocaleDateString()})`;
-                listItem.appendChild(completionDateSpan);
+                detailsDiv.appendChild(completionDateSpan);
             }
+
             if (task.memo && task.memo.trim() !== '') {
                 const memoP = document.createElement('p');
                 memoP.className = 'task-memo';
                 memoP.textContent = `メモ: ${task.memo}`;
-                listItem.appendChild(memoP);
+                detailsDiv.appendChild(memoP);
             }
+
+            listItem.appendChild(detailsDiv);
+
             let showActions = false;
             if (selectedDateString && !task.completed) {
                 showActions = true;
             } else if (!selectedDateString && (!task.completed || (task.completed && task.completionDate && task.completionDate.startsWith(todayString)))) {
                  showActions = true;
             }
+
             if (showActions) {
                 const actionsDiv = document.createElement('div');
                 actionsDiv.className = 'task-actions';
-                const completeButton = document.createElement('button');
-                if (task.completed) {
-                    completeButton.innerHTML = '<i class="fa-solid fa-rotate-left"></i>';
-                    completeButton.title = '未完了に戻す';
-                } else {
-                    completeButton.innerHTML = '<i class="fa-solid fa-check"></i>';
-                    completeButton.title = '完了';
-                }
-                completeButton.className = 'complete-btn';
-                completeButton.addEventListener('click', () => toggleComplete(task.id));
-                actionsDiv.appendChild(completeButton);
+
                 if (!task.completed) {
                     const editButton = document.createElement('button');
                     editButton.innerHTML = '<i class="fa-solid fa-pencil"></i>';
@@ -649,12 +665,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     editButton.addEventListener('click', () => openEditModal(task.id));
                     actionsDiv.appendChild(editButton);
                 }
+
                 const deleteButton = document.createElement('button');
                 deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
                 deleteButton.title = '削除';
                 deleteButton.className = 'delete-btn';
                 deleteButton.addEventListener('click', () => deleteTask(task.id));
                 actionsDiv.appendChild(deleteButton);
+
                 listItem.appendChild(actionsDiv);
             }
             taskListContainer.appendChild(listItem);
