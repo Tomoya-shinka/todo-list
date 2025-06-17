@@ -182,6 +182,7 @@ button {
     padding: 20px;
     border-radius: var(--border-radius-md);
     box-shadow: var(--shadow);
+    padding-bottom: 120px; /* 右下のボタンが重ならないように、下部に十分な余白を確保 */
 }
 
 #daily-tasks-area h2 {
