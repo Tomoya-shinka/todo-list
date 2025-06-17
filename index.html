@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todoリストアプリ</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header>
+        <h1>Todo List</h1>
+    </header>
+
+    <main>
+        <div id="calendar-area">
+            <div id="calendar-header">
+                <button id="prev-month-btn">&lt; 前月</button>
+                <h3 id="month-year-display">（ここに月と年が表示されます）</h3>
+                <button id="next-month-btn">翌月 &gt;</button>
+            </div>
+            <div id="calendar-weekdays">
+                <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+            </div>
+            <div id="calendar-grid">
+                </div>
+        </div>
+
+        <button id="manage-categories-btn" style="margin-bottom: 10px; margin-left: 10px;">カテゴリを管理</button>
+
+        <button id="toggle-view-btn" style="margin-bottom: 10px;">完了済みタスクを見る</button>
+
+        <div id="daily-tasks-area">
+            <h2>今日のタスク</h2>
+            <p>タスク一覧エリア</p>
+        </div>
+
+        <div id="task-input-modal" class="modal"> <div class="modal-content"> <span class="close-btn" id="close-modal-btn">&times;</span> <h2>タスクを編集・追加</h2>
+            <form id="task-form">
+                <div>
+                    <label for="task-name">タスク名:</label>
+                    <input type="text" id="task-name" required>
+                </div>
+                <div>
+                    <label for="task-due-date">期限:</label>
+                    <input type="date" id="task-due-date">
+                </div>
+                <div>
+                    <label for="task-priority">優先度 (1-5):</label>
+                    <input type="number" id="task-priority" min="1" max="5" value="3">
+                </div>
+                <div>
+                    <label for="task-category">カテゴリ:</label>
+                    <select id="task-category">
+                        </select>
+                </div>
+                <div>
+                    <label for="task-memo">メモ:</label>
+                    <textarea id="task-memo"></textarea>
+                </div>
+                <button type="submit">保存</button>
+            </form>
+            </div>
+        </div>
+    </main>
+
+    <button id="add-task-btn" class="fab">+</button>
+
+    <div id="category-management-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="close-category-modal-btn">&times;</span>
+            <h2>カテゴリを管理</h2>
+        
+            <div id="category-list-area">
+                <h3>既存のカテゴリ</h3>
+                <ul id="existing-categories-list">
+                    </ul>
+            </div>
+        
+            <hr>
+        
+            <div id="add-category-area">
+                <h3>新しいカテゴリを追加</h3>
+                <form id="add-category-form">
+                    <div>
+                        <label for="new-category-name">カテゴリ名:</label>
+                        <input type="text" id="new-category-name" required>
+                    </div>
+                    <div>
+                        <label for="new-category-color-bg">背景色:</label>
+                        <input type="color" id="new-category-color-bg" value="#6c757d"> </div>
+                    <div>
+                        <label for="new-category-color-text">文字色:</label>
+                        <input type="color" id="new-category-color-text" value="#ffffff"> </div>
+                    <button type="submit">カテゴリを追加</button>
+                </form>
+            </div>
+        
+            <div id="edit-category-area" style="display:none;">
+                <hr>
+                <h3>カテゴリを編集</h3>
+                <form id="edit-category-form">
+                    <input type="hidden" id="edit-category-id">
+                    <div>
+                        <label for="edit-category-name">カテゴリ名:</label>
+                        <input type="text" id="edit-category-name" required>
+                    </div>
+                    <div>
+                        <label for="edit-category-color-bg">背景色:</label>
+                        <input type="color" id="edit-category-color-bg">
+                    </div>
+                    <div>
+                        <label for="edit-category-color-text">文字色:</label>
+                        <input type="color" id="edit-category-color-text">
+                    </div>
+                    <button type="submit">変更を保存</button>
+                    <button type="button" id="cancel-edit-category-btn">キャンセル</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
